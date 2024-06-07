@@ -1,0 +1,20 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import zipfile
+import io
+import requests
+response = requests.get(url)
+with zipfile.ZipFile(io.BytesIO(response.content)) as z:
+z.extractall()
+population_data = pd.read_csv('API_SP.POP.TOTL_DS2_en_csv_v2_5664556.csv', skiprows=4)
+print(population_data.head())
+population_data = population_data[['Country Name', '2019']]
+population_data.columns = ['Country', 'Population']
+population_data.dropna(inplace=True)
+plt.figure(figsize=(12, 8))
+plt.bar(population_data['Country'], population_data['Population'])
+plt.xlabel('Country')
+plt.ylabel('Population')
+plt.title('Population by Country in 2019')
+plt.xticks(rotation=90)
+plt.show()
